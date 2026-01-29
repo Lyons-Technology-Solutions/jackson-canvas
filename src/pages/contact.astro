@@ -1,0 +1,246 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navigation from '../components/layout/Navigation.astro';
+import Footer from '../components/layout/Footer.astro';
+import Section from '../components/ui/Section.astro';
+import Button from '../components/ui/Button.astro';
+---
+
+<Layout title="Contact | Jackson Canvas Company">
+  <Navigation theme="light" />
+  
+  <main class="pt-24">
+    <Section>
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
+        
+        <!-- Contact Info -->
+        <div class="reveal-text">
+          <h1 class="text-5xl font-display font-bold mb-8">Get in Touch With Us</h1>
+          <p class="text-xl text-slate-600 mb-12">
+            Interested in a quote for the services we offer? Want to know more about what we do? Have a question or comment? Fill out the form and we'll get back to you!
+          </p>
+
+          <div class="space-y-12">
+            <div class="contact-card group border-t border-slate-200 pt-8 cursor-pointer hover:border-stone-500 transition-colors duration-300">
+              <span class="font-display font-bold text-sm tracking-widest uppercase text-stone-600 mb-4 block">Phone</span>
+              <a href="tel:517-787-1330" class="text-3xl md:text-4xl font-display font-bold text-slate-900 hover:text-stone-600 transition-colors block mb-2 group-hover:translate-x-2 transform duration-300">
+                (517) 787-1330
+              </a>
+              <p class="text-slate-600">By appointment only.</p>
+            </div>
+
+            <div class="contact-card group border-t border-slate-200 pt-8 cursor-pointer hover:border-stone-500 transition-colors duration-300">
+              <span class="font-display font-bold text-sm tracking-widest uppercase text-stone-600 mb-4 block">Location</span>
+              <address class="not-italic text-2xl md:text-3xl font-display font-bold text-slate-900 mb-2 block group-hover:translate-x-2 transform duration-300">
+                2100 Brooklyn Road<br>
+                Jackson, MI 49203
+              </address>
+              <p class="text-slate-600">By appointment only.</p>
+            </div>
+
+            <div class="contact-card group border-t border-slate-200 pt-8">
+              <span class="font-display font-bold text-sm tracking-widest uppercase text-stone-600 mb-4 block">Hours</span>
+              <div class="grid grid-cols-2 gap-x-12 text-lg text-slate-900 max-w-sm hours-grid">
+                <span class="text-slate-500">Mon - Fri</span>
+                <span class="font-bold">By appointment only</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Contact Form -->
+        <div class="contact-form bg-slate-50 p-8 md:p-12 rounded-2xl shadow-xl">
+          <h2 class="text-2xl font-bold mb-6">Send us a Message</h2>
+          <form class="space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div class="form-field">
+                <label for="firstName" class="block text-sm font-bold text-slate-700 mb-2">First Name</label>
+                <input type="text" id="firstName" class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:border-stone-500 focus:ring-2 focus:ring-stone-500/20 outline-none transition-all duration-300 hover:border-slate-300" />
+              </div>
+              <div class="form-field">
+                <label for="lastName" class="block text-sm font-bold text-slate-700 mb-2">Last Name</label>
+                <input type="text" id="lastName" class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:border-stone-500 focus:ring-2 focus:ring-stone-500/20 outline-none transition-all duration-300 hover:border-slate-300" />
+              </div>
+            </div>
+            
+            <div class="form-field">
+              <label for="email" class="block text-sm font-bold text-slate-700 mb-2">Email Address</label>
+              <input type="email" id="email" class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:border-stone-500 focus:ring-2 focus:ring-stone-500/20 outline-none transition-all duration-300 hover:border-slate-300" />
+            </div>
+
+            <div class="form-field">
+              <label for="interest" class="block text-sm font-bold text-slate-700 mb-2">Interested In</label>
+              <select id="interest" class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:border-stone-500 focus:ring-2 focus:ring-stone-500/20 outline-none transition-all duration-300 bg-white hover:border-slate-300 cursor-pointer">
+                <option>The Liberator Pontoon Cover</option>
+                <option>Custom Marine Canvas</option>
+                <option>Industrial Fabrication</option>
+                <option>Other</option>
+              </select>
+            </div>
+
+            <div class="form-field">
+              <label for="message" class="block text-sm font-bold text-slate-700 mb-2">Message</label>
+              <textarea id="message" rows="4" class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:border-stone-500 focus:ring-2 focus:ring-stone-500/20 outline-none transition-all duration-300 hover:border-slate-300 resize-none"></textarea>
+            </div>
+
+            <button type="submit" class="submit-btn w-full bg-stone-500 text-slate-900 font-bold py-4 px-8 rounded-lg hover:bg-stone-400 transition-all duration-300 hover:shadow-lg hover:shadow-stone-500/25 active:scale-[0.98] relative overflow-hidden group">
+              <span class="relative z-10">Send Message</span>
+              <div class="absolute inset-0 bg-gradient-to-r from-stone-400 to-stone-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            </button>
+          </form>
+        </div>
+
+      </div>
+    </Section>
+
+    <!-- Map Section -->
+    <div class="map-section h-[400px] w-full bg-slate-200 relative overflow-hidden">
+      <iframe 
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2948.875691069814!2d-84.3986884845455!3d42.22156897919656!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x883d3aa4e772591b%3A0x6295556666324971!2sJackson%20Canvas%20Co!5e0!3m2!1sen!2sus!4v1620000000000!5m2!1sen!2sus" 
+        width="100%" 
+        height="100%" 
+        style="border:0;" 
+        allowfullscreen="" 
+        loading="lazy"
+        class="filter grayscale hover:grayscale-0 transition-all duration-700 scale-105 hover:scale-100"
+      ></iframe>
+      
+      <!-- Floating location card -->
+      <div class="absolute bottom-6 left-6 bg-white p-6 rounded-xl shadow-2xl max-w-xs location-card">
+        <div class="flex items-start gap-4">
+          <div class="w-12 h-12 bg-stone-500 rounded-full flex items-center justify-center flex-shrink-0">
+            <svg class="w-6 h-6 text-slate-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+            </svg>
+          </div>
+          <div>
+            <h3 class="font-bold text-slate-900 mb-1">Jackson Canvas Company</h3>
+            <p class="text-sm text-slate-600">2100 Brooklyn Road<br>Jackson, MI 49203</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <Footer />
+</Layout>
+
+<script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  // Hero text entrance
+  const heroText = document.querySelector('.reveal-text h1');
+  const heroDesc = document.querySelector('.reveal-text p');
+  
+  gsap.fromTo(heroText, 
+    { opacity: 0, y: 60 },
+    { opacity: 1, y: 0, duration: 1.2, ease: "power3.out", delay: 0.2 }
+  );
+  
+  gsap.fromTo(heroDesc,
+    { opacity: 0, y: 40 },
+    { opacity: 1, y: 0, duration: 1, ease: "power3.out", delay: 0.4 }
+  );
+
+  // Contact cards staggered reveal
+  const contactCards = document.querySelectorAll('.contact-card');
+  contactCards.forEach((card, index) => {
+    gsap.set(card, { opacity: 0, x: -40 });
+    
+    gsap.to(card, {
+      opacity: 1,
+      x: 0,
+      duration: 0.8,
+      ease: "power3.out",
+      delay: 0.5 + index * 0.15
+    });
+  });
+
+  // Form entrance with stagger
+  const contactForm = document.querySelector('.contact-form');
+  const formFields = document.querySelectorAll('.form-field');
+  const submitBtn = document.querySelector('.submit-btn');
+  
+  gsap.fromTo(contactForm,
+    { opacity: 0, x: 60, rotateY: -5 },
+    { opacity: 1, x: 0, rotateY: 0, duration: 1.2, ease: "power3.out", delay: 0.3 }
+  );
+  
+  formFields.forEach((field, index) => {
+    gsap.set(field, { opacity: 0, y: 20 });
+    
+    gsap.to(field, {
+      opacity: 1,
+      y: 0,
+      duration: 0.6,
+      ease: "power2.out",
+      delay: 0.6 + index * 0.1
+    });
+  });
+
+  // Submit button pulse animation
+  if (submitBtn) {
+    gsap.set(submitBtn, { opacity: 0, y: 20 });
+    gsap.to(submitBtn, {
+      opacity: 1,
+      y: 0,
+      duration: 0.6,
+      ease: "power2.out",
+      delay: 1.2
+    });
+  }
+
+  // Map section reveal
+  const mapSection = document.querySelector('.map-section');
+  const locationCard = document.querySelector('.location-card');
+  
+  if (mapSection) {
+    gsap.set(mapSection, { opacity: 0 });
+    
+    ScrollTrigger.create({
+      trigger: mapSection,
+      start: "top 80%",
+      onEnter: () => {
+        gsap.to(mapSection, {
+          opacity: 1,
+          duration: 1,
+          ease: "power2.out"
+        });
+        
+        if (locationCard) {
+          gsap.fromTo(locationCard,
+            { opacity: 0, y: 30, scale: 0.9 },
+            { opacity: 1, y: 0, scale: 1, duration: 0.8, ease: "back.out(1.7)", delay: 0.3 }
+          );
+        }
+      }
+    });
+  }
+
+  // Input focus animations
+  const inputs = document.querySelectorAll('input, textarea, select');
+  inputs.forEach(input => {
+    input.addEventListener('focus', () => {
+      gsap.to(input, { scale: 1.02, duration: 0.2, ease: "power2.out" });
+    });
+    
+    input.addEventListener('blur', () => {
+      gsap.to(input, { scale: 1, duration: 0.2, ease: "power2.out" });
+    });
+  });
+</script>
+
+<style>
+  .contact-form {
+    transform-style: preserve-3d;
+    perspective: 1000px;
+  }
+  
+  .location-card {
+    backdrop-filter: blur(10px);
+  }
+</style>

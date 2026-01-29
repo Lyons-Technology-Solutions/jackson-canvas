@@ -1,0 +1,103 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navigation from '../components/layout/Navigation.astro';
+import Footer from '../components/layout/Footer.astro';
+import Section from '../components/ui/Section.astro';
+import LiquidButton from '../components/ui/LiquidButton.astro';
+import Accordion from '../components/ui/Accordion.astro';
+
+const faqs = [
+  {
+    question: "Will The Liberator work on my boat?",
+    answer: "Yes, so far we have been able to fit 100% of the boats assembled to date."
+  },
+  {
+    question: "What powers The Liberator?",
+    answer: "It uses your standard 12 volt battery."
+  },
+  {
+    question: "Is it all weather?",
+    answer: "The Liberator is manufactured of marine grade everything, utilizing aluminum, plastic and stainless steel."
+  },
+  {
+    question: "What color choices are available?",
+    answer: "We are using only Weathermax 80 for the top cover material and the colors they offer."
+  },
+  {
+    question: "Can I trailer with The Liberator top?",
+    answer: "Yes you can, at less than highway speeds, however the sides and rear corners need to be tied down with the provided straps."
+  },
+  {
+    question: "How fast can I go with The Liberator top extended?",
+    answer: "The Liberator has been tested to 60 MPH."
+  },
+  {
+    question: "What about winter storage?",
+    answer: "The Liberator is not designed to handle heavy wet snow loads. The cover canvas must be removed before shrink wrap is applied."
+  },
+  {
+    question: "What is the warranty?",
+    answer: "3 years normal and customary."
+  },
+  {
+    question: "How long will I be without my boat?",
+    answer: "It takes only 3-4 days to add The Liberator. We will need your boat in Jackson MI to do the work."
+  }
+];
+---
+
+<Layout title="FAQ | Jackson Canvas Company">
+  <Navigation theme="light" />
+  
+  <main class="pt-24">
+    <Section>
+      <div class="max-w-3xl mx-auto">
+        <div class="text-center mb-16 reveal-text">
+          <h1 class="text-5xl md:text-7xl font-display font-bold mb-8">FAQ</h1>
+          <p class="text-xl text-slate-600 leading-relaxed">
+            Frequently Asked Questions about Jackson Canvas and the Liberator semi-automatic pontoon cover.
+          </p>
+        </div>
+        
+        <Accordion items={faqs} />
+        
+        <div class="mt-16 text-center">
+          <a 
+            href="https://jacksoncanvas.com/wp-content/uploads/FAQ-LIB.pdf" 
+            target="_blank"
+            class="inline-flex items-center gap-3 bg-stone-500 text-slate-900 font-bold py-4 px-8 rounded-lg hover:bg-stone-400 transition-all duration-300 hover:shadow-lg"
+          >
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+            </svg>
+            Download FAQ PDF
+          </a>
+        </div>
+      </div>
+    </Section>
+
+    <Section theme="dark" class="text-center">
+      <h2 class="text-4xl font-display font-bold mb-6">Still have questions?</h2>
+      <p class="text-slate-300 text-lg mb-8">We're here to help. Reach out to our team.</p>
+      <LiquidButton href="/contact">Contact Us</LiquidButton>
+    </Section>
+  </main>
+
+  <Footer />
+</Layout>
+
+<script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  // Hero text reveal
+  const revealText = document.querySelector('.reveal-text');
+  if (revealText) {
+    gsap.fromTo(revealText, 
+      { opacity: 0, y: 60 },
+      { opacity: 1, y: 0, duration: 1.2, ease: "power3.out", delay: 0.2 }
+    );
+  }
+</script>

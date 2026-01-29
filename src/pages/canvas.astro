@@ -1,0 +1,191 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navigation from '../components/layout/Navigation.astro';
+import Footer from '../components/layout/Footer.astro';
+import Section from '../components/ui/Section.astro';
+import LiquidButton from '../components/ui/LiquidButton.astro';
+
+const services = {
+  industrial: {
+    title: "Industrial & Agricultural",
+    items: [
+      "Custom Tool Bags",
+      "Tarps & Covers – Trailers, Equipment, & Machinery"
+    ]
+  },
+  watercraft: {
+    title: "Watercraft",
+    items: [
+      "Curtains – Side & Aft",
+      "Covers – Bow, Pontoon, Boat, & Jet Ski",
+      "Watercraft Furniture Covers",
+      "Tops – Complete & Bimini",
+      "Upholstery Repairs – Pontoon, Boat, & Jet Ski"
+    ]
+  },
+  misc: {
+    title: "Miscellaneous",
+    items: [
+      "Banners",
+      "Tent Repair",
+      "Covers – Golf Cart, ATV, Motorcycle, Snowmobile, Car, Truck, & Trailer",
+      "Zipper Replacement – Tents, Luggage, Bags, & More!",
+      "Sport Bags",
+      "Truck Tonneau Repairs",
+      "Pool Covers & Repairs",
+      "Exam Table Covers & Repairs",
+      "Patio Furniture Upholstery & Repairs"
+    ]
+  }
+};
+---
+
+<Layout title="Canvas Services | Jackson Canvas Company">
+  <Navigation theme="light" />
+  
+  <main class="pt-24">
+    <Section>
+      <div class="max-w-3xl mb-16 reveal-text">
+        <h1 class="text-5xl md:text-7xl font-display font-bold mb-8">We've Got You Covered</h1>
+        <p class="text-xl text-slate-600 leading-relaxed">
+          With more than 60 years in the commercial sewing business, Jackson Canvas has the know-how to serve your cut and sew needs. Boat covers, tarps, porch or industrial curtains covers for any purpose.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+        {Object.values(services).map((category, index) => (
+          <div class="service-card group bg-white p-8 rounded-2xl shadow-lg border border-slate-100 hover:border-stone-500 transition-all duration-300 hover:shadow-xl">
+            <div class="w-12 h-12 bg-stone-500 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+              <span class="text-slate-900 font-bold text-lg">{(index + 1).toString().padStart(2, '0')}</span>
+            </div>
+            <h3 class="text-2xl font-display font-bold mb-6 group-hover:text-stone-600 transition-colors duration-300">{category.title}</h3>
+            <ul class="space-y-3">
+              {category.items.map((item: string) => (
+                <li class="flex items-start gap-3 text-slate-600">
+                  <span class="w-1.5 h-1.5 rounded-full bg-stone-500 mt-2 flex-shrink-0"></span>
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </Section>
+
+    <Section theme="dark" class="text-center">
+      <h2 class="text-4xl font-display font-bold mb-6">Have a challenging project?</h2>
+      <p class="text-slate-300 text-lg mb-8">We specialize in solving problems others can't.</p>
+      <LiquidButton href="/contact">Start a Conversation</LiquidButton>
+    </Section>
+  </main>
+
+  <Footer />
+</Layout>
+
+<script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+  import { animate, inView, stagger } from "motion";
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  // Hero text reveal
+  inView(".reveal-text", (info) => {
+    animate(info.target, { opacity: [0, 1], y: [50, 0] }, { duration: 1, easing: [0.16, 1, 0.3, 1] });
+  });
+
+  // Staggered project card reveals with GSAP for more control
+  const cards = document.querySelectorAll('.project-card');
+  
+  cards.forEach((card, index) => {
+    const image = card.querySelector('.project-image');
+    const content = card.querySelector('.project-content');
+    
+    gsap.set(card, { opacity: 0, y: 80 });
+    
+    ScrollTrigger.create({
+      trigger: card,
+      start: "top 85%",
+      onEnter: () => {
+        gsap.to(card, {
+          opacity: 1,
+          y: 0,
+          duration: 1,
+          ease: "power3.out",
+          delay: (index % 2) * 0.15
+        });
+        
+        // Animate image with slight scale
+        gsap.fromTo(image, 
+          { scale: 1.1, opacity: 0 },
+          { scale: 1, opacity: 1, duration: 1.2, ease: "power2.out", delay: (index % 2) * 0.15 + 0.1 }
+        );
+        
+        // Animate content sliding up
+        gsap.fromTo(content,
+          { y: 30, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.8, ease: "power2.out", delay: (index % 2) * 0.15 + 0.3 }
+        );
+      }
+    });
+  });
+
+  // Magnetic hover effect on project cards
+  cards.forEach((card) => {
+    const image = card.querySelector('.project-image');
+    
+    card.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+      
+      const rotateX = (y - centerY) / 20;
+      const rotateY = (centerX - x) / 20;
+      
+      gsap.to(image, {
+        rotateX: rotateX,
+        rotateY: rotateY,
+        transformPerspective: 1000,
+        duration: 0.5,
+        ease: "power2.out"
+      });
+    });
+    
+    card.addEventListener('mouseleave', () => {
+      gsap.to(image, {
+        rotateX: 0,
+        rotateY: 0,
+        duration: 0.5,
+        ease: "power2.out"
+      });
+    });
+  });
+
+  // CTA section parallax
+  const ctaSection = document.querySelector('section[class*="theme-dark"]');
+  if (ctaSection) {
+    gsap.to(ctaSection.querySelector('h2'), {
+      scrollTrigger: {
+        trigger: ctaSection,
+        start: "top bottom",
+        end: "bottom top",
+        scrub: 1
+      },
+      y: -30
+    });
+  }
+</script>
+
+<style>
+  .project-card {
+    display: block;
+    transform-style: preserve-3d;
+  }
+  
+  .project-image {
+    transform-style: preserve-3d;
+    will-change: transform;
+  }
+</style>

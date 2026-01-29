@@ -1,0 +1,174 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navigation from '../components/layout/Navigation.astro';
+import Footer from '../components/layout/Footer.astro';
+import Section from '../components/ui/Section.astro';
+import LiquidButton from '../components/ui/LiquidButton.astro';
+
+const galleryImages = [
+  {
+    src: "/media/image.png",
+    alt: "Liberator Cover Front View",
+    caption: "Front view of The Liberator"
+  },
+  {
+    src: "/media/image copy.png",
+    alt: "Liberator Swing Back Down",
+    caption: "Swing back in down position"
+  },
+  {
+    src: "/media/image copy 2.png",
+    alt: "Liberator Swing Back Open",
+    caption: "Swing back in open position"
+  },
+  {
+    src: "/media/image copy 3.png",
+    alt: "Liberator on Pontoon",
+    caption: "Installed on pontoon boat"
+  },
+  {
+    src: "/media/image copy 4.png",
+    alt: "Liberator Cover Detail",
+    caption: "Cover detail view"
+  },
+  {
+    src: "/media/image copy 5.png",
+    alt: "Liberator Full Coverage",
+    caption: "Full coverage protection"
+  }
+];
+---
+
+<Layout title="Liberator Gallery | Jackson Canvas Company">
+  <Navigation theme="light" />
+  
+  <main class="pt-24">
+    <Section>
+      <div class="text-center max-w-3xl mx-auto mb-16 reveal-text">
+        <h1 class="text-5xl md:text-7xl font-display font-bold mb-8">Liberator Gallery</h1>
+        <p class="text-xl text-slate-600 leading-relaxed">
+          View photos of the Liberator semi-automatic pontoon cover in action. See how it protects boats of all sizes.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {galleryImages.map((image, index) => (
+          <div 
+            class="gallery-item group relative aspect-[4/3] overflow-hidden rounded-xl bg-slate-100 cursor-pointer shadow-lg"
+            data-index={index}
+          >
+            <img 
+              src={image.src} 
+              alt={image.alt} 
+              class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-slate-900/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            
+            <div class="absolute bottom-0 left-0 right-0 p-6 translate-y-full group-hover:translate-y-0 transition-transform duration-500">
+              <p class="text-white font-bold text-lg">{image.caption}</p>
+            </div>
+            
+            <div class="absolute top-4 right-4 w-10 h-10 bg-white/90 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 scale-75 group-hover:scale-100">
+              <svg class="w-5 h-5 text-slate-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path>
+              </svg>
+            </div>
+          </div>
+        ))}
+      </div>
+    </Section>
+
+    <Section theme="dark" class="text-center">
+      <h2 class="text-4xl font-display font-bold mb-6">Ready to get your Liberator?</h2>
+      <p class="text-slate-300 text-lg mb-8">Contact us today for pricing and availability.</p>
+      <div class="flex flex-col md:flex-row gap-4 justify-center">
+        <LiquidButton href="/liberator">Learn More</LiquidButton>
+        <LiquidButton href="/contact" variant="outline" class="text-white border-white hover:bg-stone-500 hover:border-stone-500">
+          Request Quote
+        </LiquidButton>
+      </div>
+    </Section>
+  </main>
+
+  <Footer />
+</Layout>
+
+<script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  // Hero text reveal
+  const revealText = document.querySelector('.reveal-text');
+  if (revealText) {
+    gsap.fromTo(revealText, 
+      { opacity: 0, y: 60 },
+      { opacity: 1, y: 0, duration: 1.2, ease: "power3.out", delay: 0.2 }
+    );
+  }
+
+  // Gallery items staggered reveal
+  const galleryItems = document.querySelectorAll('.gallery-item');
+  galleryItems.forEach((item, index) => {
+    gsap.set(item, { opacity: 0, y: 60, scale: 0.95 });
+    
+    ScrollTrigger.create({
+      trigger: item,
+      start: "top 85%",
+      onEnter: () => {
+        gsap.to(item, {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 0.8,
+          ease: "power3.out",
+          delay: (index % 3) * 0.1
+        });
+      }
+    });
+  });
+
+  // Lightbox functionality
+  const lightbox = document.createElement('div');
+  lightbox.className = 'fixed inset-0 bg-slate-900/95 z-[100] flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-300';
+  lightbox.innerHTML = `
+    <button class="absolute top-6 right-6 text-white hover:text-stone-500 transition-colors" id="close-lightbox">
+      <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+      </svg>
+    </button>
+    <img src="" alt="" class="max-w-[90vw] max-h-[85vh] object-contain rounded-lg shadow-2xl" id="lightbox-img" />
+  `;
+  document.body.appendChild(lightbox);
+
+  const lightboxImg = document.getElementById('lightbox-img') as HTMLImageElement;
+  const closeLightbox = document.getElementById('close-lightbox');
+
+  galleryItems.forEach((item) => {
+    item.addEventListener('click', () => {
+      const img = item.querySelector('img') as HTMLImageElement;
+      if (lightboxImg && img) {
+        lightboxImg.src = img.src;
+        lightboxImg.alt = img.alt;
+        lightbox.classList.remove('opacity-0', 'pointer-events-none');
+      }
+    });
+  });
+
+  closeLightbox?.addEventListener('click', () => {
+    lightbox.classList.add('opacity-0', 'pointer-events-none');
+  });
+
+  lightbox.addEventListener('click', (e) => {
+    if (e.target === lightbox) {
+      lightbox.classList.add('opacity-0', 'pointer-events-none');
+    }
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      lightbox.classList.add('opacity-0', 'pointer-events-none');
+    }
+  });
+</script>

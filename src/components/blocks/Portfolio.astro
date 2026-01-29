@@ -1,0 +1,79 @@
+---
+import { MoveRight } from 'lucide-react';
+
+const projects = [
+  {
+    id: '01',
+    title: 'The Liberator',
+    category: 'Semi-Automatic Cover',
+    description: 'No more snapping buttons. Deploy your cover in seconds.',
+    image: '/media/image.png'
+  },
+  {
+    id: '02',
+    title: 'Pontoon Protection',
+    category: 'Custom Fit Covers',
+    description: 'Tailored protection for every major pontoon brand.',
+    image: '/media/image copy.png'
+  },
+  {
+    id: '03',
+    title: 'Marine Canvas',
+    category: 'UV & Weather Shield',
+    description: 'Keep your interior pristine season after season.',
+    image: '/media/image copy 2.png'
+  }
+];
+---
+
+<section class="pt-32 md:pt-40 pb-0 bg-white overflow-hidden">
+  <div class="px-6 md:px-12 max-w-[1920px] mx-auto mb-16 flex flex-col md:flex-row justify-between items-end gap-8">
+    <div>
+      <h2 class="text-xs font-bold uppercase tracking-widest text-slate-500 mb-4">Selected Works</h2>
+      <p class="text-4xl md:text-5xl font-display font-medium text-slate-900 max-w-xl">
+        Engineering meets <span class="font-serif italic text-stone-600">craftsmanship</span>.
+      </p>
+    </div>
+    <a href="/canvas" class="group flex items-center gap-2 text-sm font-bold uppercase tracking-wide hover:text-stone-600 transition-colors">
+      View All Projects
+      <MoveRight class="w-4 h-4 transition-transform group-hover:translate-x-1" />
+    </a>
+  </div>
+
+  <div class="relative w-full">
+    <div class="flex flex-col">
+      {projects.map((project) => (
+        <a href="/liberator" class="group relative w-full h-[50vh] md:h-[60vh] border-t border-slate-200 overflow-hidden cursor-pointer project-item block">
+          
+          <!-- Background Image -->
+          <div class="absolute inset-0 w-full h-full bg-slate-100 transition-transform duration-700 group-hover:scale-105">
+            <img 
+              src={project.image} 
+              alt={project.title} 
+              class="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity duration-500"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-slate-900/20 to-transparent"></div>
+          </div>
+
+          <!-- Content Overlay -->
+          <div class="absolute bottom-0 left-0 w-full p-8 md:p-12 flex justify-between items-end z-20">
+            <div>
+              <span class="block text-xs font-bold uppercase tracking-widest text-stone-500 mb-2">{project.category}</span>
+              <h3 class="text-3xl md:text-5xl font-display font-bold text-white mb-3">
+                {project.title}
+              </h3>
+              <p class="text-white/70 text-lg max-w-md opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500">
+                {project.description}
+              </p>
+            </div>
+            <span class="text-6xl font-display font-black text-white/10 group-hover:text-stone-500/30 transition-colors duration-500">
+              {project.id}
+            </span>
+          </div>
+
+        </a>
+      ))}
+    </div>
+  </div>
+</section>
+

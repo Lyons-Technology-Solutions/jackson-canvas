@@ -1,0 +1,230 @@
+---
+import '../styles/global.css';
+
+// Supports weights 200-800
+import '@fontsource/manrope/200.css';
+import '@fontsource/manrope/300.css';
+import '@fontsource/manrope/400.css';
+import '@fontsource/manrope/500.css';
+import '@fontsource/manrope/600.css';
+import '@fontsource/manrope/700.css';
+import '@fontsource/manrope/800.css';
+
+// Supports weights 100-900
+import '@fontsource/inter/100.css';
+import '@fontsource/inter/300.css';
+import '@fontsource/inter/400.css';
+import '@fontsource/inter/500.css';
+import '@fontsource/inter/600.css';
+
+// Supports weights 400-900
+import '@fontsource/playfair-display/400.css';
+import '@fontsource/playfair-display/600.css';
+import '@fontsource/playfair-display/700.css';
+
+import 'lenis/dist/lenis.css';
+import { ClientRouter } from 'astro:transitions';
+import CustomCursor from '../components/ui/CustomCursor.astro';
+
+interface Props {
+	title: string;
+	description?: string;
+}
+
+const { title, description = "Jackson Canvas Co. - Quality Canvas & Metal Fabrication Since 1945" } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="description" content={description} />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="generator" content={Astro.generator} />
+		<title>{title}</title>
+		<ClientRouter />
+	</head>
+	<body class="bg-white text-slate-900 antialiased selection:bg-stone-100 selection:text-stone-900">
+		<CustomCursor />
+		<!-- Page Transition Overlay -->
+		<div id="page-transition" class="fixed inset-0 z-[9999] pointer-events-none flex items-center justify-center">
+			<svg class="absolute inset-0 w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+				<path id="transition-path" d="M 0 100 V 100 Q 50 100 100 100 V 100 z" fill="#0f172a" />
+			</svg>
+		</div>
+		
+		<slot />
+		
+		<style is:global>
+			/* Blur-in animation for text */
+			@keyframes blur-in {
+				0% {
+					opacity: 0;
+					filter: blur(20px);
+					transform: translateY(20px);
+				}
+				100% {
+					opacity: 1;
+					filter: blur(0);
+					transform: translateY(0);
+				}
+			}
+			
+			@keyframes blur-out {
+				0% {
+					opacity: 1;
+					filter: blur(0);
+				}
+				100% {
+					opacity: 0;
+					filter: blur(10px);
+				}
+			}
+			
+			/* Page transition classes - applied to main content only */
+			main {
+				will-change: opacity, filter;
+			}
+			
+			.page-entering main {
+				animation: blur-in 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+			}
+			
+			.page-leaving main {
+				animation: blur-out 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+			}
+			
+			/* Staggered blur-in for headings */
+			.blur-in {
+				opacity: 0;
+				filter: blur(20px);
+				transform: translateY(20px);
+				animation: blur-in 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+				animation-delay: var(--blur-delay, 0s);
+			}
+			
+			/* Transition overlay animation */
+			#page-transition {
+				visibility: hidden;
+			}
+			#page-transition.active {
+				visibility: visible;
+			}
+		</style>
+		
+		<script>
+			import { gsap } from 'gsap'
+			import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+			gsap.registerPlugin(ScrollTrigger)
+
+			// Refresh ScrollTrigger after page load
+			setTimeout(() => {
+				ScrollTrigger.refresh();
+			}, 200);
+			
+			// Page transition handling
+			const pageTransition = document.getElementById('page-transition');
+			const path = document.querySelector('#transition-path');
+			
+			const animateTransitionIn = () => {
+				if (!pageTransition || !path) return;
+				pageTransition.classList.add('active');
+				return gsap.to(path, {
+					attr: { d: 'M 0 100 V 0 Q 50 0 100 0 V 100 z' },
+					duration: 0.8,
+					ease: "power4.inOut"
+				});
+			};
+
+			const animateTransitionOut = () => {
+				if (!pageTransition || !path) return;
+				return gsap.to(path, {
+					attr: { d: 'M 0 0 V 0 Q 50 0 100 0 V 0 z' },
+					duration: 0.8,
+					ease: "power4.inOut",
+					onComplete: () => {
+						pageTransition.classList.remove('active');
+						// Reset path for next transition
+						gsap.set(path, { attr: { d: 'M 0 100 V 100 Q 50 100 100 100 V 100 z' } });
+					}
+				});
+			};
+			
+			// Initial page load - blur in
+			document.body.classList.add('page-entering');
+			setTimeout(() => {
+				document.body.classList.remove('page-entering');
+			}, 800);
+			
+			// Animate headings with staggered blur-in
+			const animateBlurIn = () => {
+				const headings = document.querySelectorAll('h1, h2, h3');
+				headings.forEach((heading, index) => {
+					if (!heading.classList.contains('blur-animated')) {
+						heading.classList.add('blur-animated');
+						gsap.fromTo(heading, 
+							{ opacity: 0, filter: 'blur(15px)', y: 30 },
+							{ 
+								opacity: 1, 
+								filter: 'blur(0px)', 
+								y: 0, 
+								duration: 0.8, 
+								ease: 'power3.out',
+								delay: 0.1 + index * 0.05,
+								scrollTrigger: {
+									trigger: heading,
+									start: 'top 90%'
+								}
+							}
+						);
+					}
+				});
+				
+				// Also animate paragraphs
+				const paragraphs = document.querySelectorAll('p');
+				paragraphs.forEach((p) => {
+					if (!p.classList.contains('blur-animated') && p.textContent && p.textContent.length > 20) {
+						p.classList.add('blur-animated');
+						gsap.fromTo(p, 
+							{ opacity: 0, filter: 'blur(10px)', y: 20 },
+							{ 
+								opacity: 1, 
+								filter: 'blur(0px)', 
+								y: 0, 
+								duration: 0.6, 
+								ease: 'power2.out',
+								delay: 0.2,
+								scrollTrigger: {
+									trigger: p,
+									start: 'top 90%'
+								}
+							}
+						);
+					}
+				});
+			};
+			
+			// Run on initial load
+			animateBlurIn();
+			
+			// Handle Astro page transitions
+			document.addEventListener('astro:before-preparation', (e) => {
+				const originalLoader = e.detail.loader;
+				e.detail.loader = async () => {
+					await animateTransitionIn();
+					await originalLoader();
+				};
+			});
+			
+			document.addEventListener('astro:after-swap', () => {
+				animateTransitionOut();
+			});
+			
+			document.addEventListener('astro:page-load', () => {
+				animateBlurIn();
+			});
+		</script>
+	</body>
+</html>

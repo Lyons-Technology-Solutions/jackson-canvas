@@ -1,0 +1,251 @@
+---
+interface Project {
+  title: string;
+  category: string;
+  image: string;
+  year: string;
+}
+
+const projects: Project[] = [
+  {
+    title: "The Liberator V1",
+    category: "Marine Innovation",
+    image: "/media/image.png",
+    year: "2024"
+  },
+  {
+    title: "Industrial Shield",
+    category: "Canvas Engineering",
+    image: "/media/image copy.png",
+    year: "2023"
+  },
+  {
+    title: "Custom Pontoon",
+    category: "Marine Solutions",
+    image: "/media/image.png",
+    year: "2024"
+  },
+  {
+    title: "Heritage Series",
+    category: "Industrial Canvas",
+    image: "/media/image copy.png",
+    year: "2023"
+  },
+  {
+    title: "The Liberator V2",
+    category: "Marine Innovation",
+    image: "/media/image.png",
+    year: "2025"
+  }
+];
+---
+
+<section class="horizontal-carousel-wrapper relative bg-slate-900 overflow-hidden py-32 md:py-48">
+  <div class="container mx-auto px-6 mb-16 relative z-10">
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-8">
+      <div>
+        <span class="text-stone-500 font-bold tracking-[0.2em] uppercase text-sm mb-4 block">Case Studies</span>
+        <h2 class="text-4xl md:text-7xl font-display font-medium text-white leading-tight">
+          Engineering <br /><span class="font-serif italic text-stone-500">Excellence</span>
+        </h2>
+      </div>
+      <div class="max-w-md">
+        <p class="text-slate-400 text-lg leading-relaxed">
+          From the original Liberator to custom industrial solutions, our work spans over 60 years of precision craftsmanship in Jackson, Michigan.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Native horizontal scroll with drag -->
+  <div class="horizontal-scroll-container overflow-x-auto overflow-y-hidden scrollbar-hide cursor-grab active:cursor-grabbing">
+    <div class="horizontal-scroll-content flex gap-8 px-[10vw] pb-8">
+      {projects.map((project) => (
+        <div class="carousel-item flex-shrink-0 w-[80vw] md:w-[45vw] lg:w-[35vw] aspect-[4/5] relative group overflow-hidden bg-slate-800">
+          <img 
+            src={project.image} 
+            alt={project.title}
+            class="absolute inset-0 w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 scale-110 group-hover:scale-100 opacity-60 group-hover:opacity-100"
+          />
+          <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent opacity-80 group-hover:opacity-40 transition-opacity duration-500"></div>
+          
+          <div class="absolute bottom-0 left-0 w-full p-8 md:p-12 z-20">
+            <div class="overflow-hidden mb-2">
+              <span class="category-text block text-stone-500 font-bold tracking-widest uppercase text-xs translate-y-full group-hover:translate-y-0 transition-transform duration-500">
+                {project.category}
+              </span>
+            </div>
+            <div class="overflow-hidden">
+              <h3 class="title-text text-2xl md:text-4xl font-display font-bold text-white translate-y-full group-hover:translate-y-0 transition-transform duration-500 delay-75">
+                {project.title}
+              </h3>
+            </div>
+            <div class="mt-6 flex items-center justify-between opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-150">
+              <span class="text-slate-400 font-mono text-sm">{project.year}</span>
+              <div class="w-12 h-px bg-stone-500"></div>
+            </div>
+          </div>
+
+          <!-- Decorative Blueprint Overlay (reveals on hover) -->
+          <div class="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-20 transition-opacity duration-700 mix-blend-overlay"></div>
+        </div>
+      ))}
+    </div>
+  </div>
+
+  <!-- Progress Bar -->
+  <div class="container mx-auto px-6 mt-8 relative z-10">
+    <div class="h-px w-full bg-slate-800 relative">
+      <div class="carousel-progress absolute top-0 left-0 h-full w-0 bg-stone-500 origin-left transition-all duration-150"></div>
+    </div>
+    <div class="flex justify-between mt-4 font-mono text-xs text-slate-500 tracking-widest">
+      <span>01</span>
+      <span>{projects.length.toString().padStart(2, '0')}</span>
+    </div>
+  </div>
+</section>
+
+<script>
+  // Auto-scrolling carousel with drag support
+  const container = document.querySelector('.horizontal-scroll-container') as HTMLElement;
+  const progressBar = document.querySelector('.carousel-progress') as HTMLElement;
+
+  if (container) {
+    let isDown = false;
+    let startX: number;
+    let scrollLeft: number;
+    let autoScrollInterval: number | null = null;
+    let isHovering = false;
+    const scrollSpeed = 1; // pixels per frame
+    const scrollDirection = 1; // 1 = right, -1 = left
+
+    // Update progress bar on scroll
+    const updateProgress = () => {
+      const maxScroll = container.scrollWidth - container.clientWidth;
+      const progress = maxScroll > 0 ? container.scrollLeft / maxScroll : 0;
+      if (progressBar) {
+        progressBar.style.width = `${progress * 100}%`;
+      }
+    };
+
+    container.addEventListener('scroll', updateProgress);
+
+    // Auto-scroll function
+    const startAutoScroll = () => {
+      if (autoScrollInterval) return;
+      
+      autoScrollInterval = window.setInterval(() => {
+        if (isDown || isHovering) return;
+        
+        const maxScroll = container.scrollWidth - container.clientWidth;
+        
+        // If at the end, reset to beginning smoothly
+        if (container.scrollLeft >= maxScroll - 1) {
+          container.scrollTo({ left: 0, behavior: 'smooth' });
+        } else {
+          container.scrollLeft += scrollSpeed;
+        }
+      }, 16); // ~60fps
+    };
+
+    const stopAutoScroll = () => {
+      if (autoScrollInterval) {
+        clearInterval(autoScrollInterval);
+        autoScrollInterval = null;
+      }
+    };
+
+    // Pause on hover
+    container.addEventListener('mouseenter', () => {
+      isHovering = true;
+    });
+
+    container.addEventListener('mouseleave', () => {
+      isHovering = false;
+      isDown = false;
+      container.classList.remove('active');
+    });
+
+    // Drag to scroll
+    container.addEventListener('mousedown', (e) => {
+      isDown = true;
+      container.classList.add('active');
+      startX = e.pageX - container.offsetLeft;
+      scrollLeft = container.scrollLeft;
+    });
+
+    container.addEventListener('mouseup', () => {
+      isDown = false;
+      container.classList.remove('active');
+    });
+
+    container.addEventListener('mousemove', (e) => {
+      if (!isDown) return;
+      e.preventDefault();
+      const x = e.pageX - container.offsetLeft;
+      const walk = (x - startX) * 2;
+      container.scrollLeft = scrollLeft - walk;
+    });
+
+    // Start auto-scroll when carousel is in view
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          startAutoScroll();
+        } else {
+          stopAutoScroll();
+        }
+      });
+    }, { threshold: 0.3 });
+
+    observer.observe(container);
+  }
+</script>
+
+<style>
+  .horizontal-scroll-container {
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+  }
+  
+  .horizontal-scroll-container::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .horizontal-scroll-container {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  
+  .horizontal-scroll-content {
+    will-change: auto;
+  }
+  
+  /* CSS-based entrance animation */
+  @keyframes carousel-fade-in {
+    from {
+      opacity: 0;
+      transform: translateX(40px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  
+  .carousel-item {
+    animation: carousel-fade-in 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    opacity: 0;
+  }
+  
+  .carousel-item:nth-child(1) { animation-delay: 0.1s; }
+  .carousel-item:nth-child(2) { animation-delay: 0.2s; }
+  .carousel-item:nth-child(3) { animation-delay: 0.3s; }
+  .carousel-item:nth-child(4) { animation-delay: 0.4s; }
+  .carousel-item:nth-child(5) { animation-delay: 0.5s; }
+
+  .carousel-item:hover {
+    transform: translateY(-20px);
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+</style>

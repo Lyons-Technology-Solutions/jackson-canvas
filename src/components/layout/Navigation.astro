@@ -1,0 +1,283 @@
+---
+import LiquidButton from '../ui/LiquidButton.astro';
+
+interface Props {
+  theme?: 'light' | 'dark';
+}
+
+const { theme = 'dark' } = Astro.props;
+const isLight = theme === 'light';
+---
+
+<!-- Logo on left side -->
+<a 
+  href="/" 
+  id="nav-logo-link"
+  class:list={[
+    "fixed top-6 left-6 lg:left-10 z-[9999] flex items-center gap-4 group",
+    isLight ? "text-slate-900" : "text-white"
+  ]}
+>
+  <img 
+    src="/logo.png" 
+    alt="Jackson Canvas Co." 
+    class="h-16 lg:h-20 w-auto object-contain transition-all duration-500 group-hover:scale-[1.02]" 
+    id="nav-logo"
+  />
+</a>
+
+<!-- Menu on right side -->
+<nav 
+  id="main-nav" 
+  class:list={[
+    "fixed top-4 right-6 lg:right-10 z-[9999] px-8 lg:px-10 py-3 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group/nav",
+    isLight ? "text-slate-900" : "text-white"
+  ]}
+  data-theme={theme}
+>
+  <!-- Creative Glassmorphism Background - Asymmetric blob shape -->
+  <div 
+    class:list={[
+      "absolute -inset-1 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] -z-10",
+      isLight 
+        ? "bg-white/60 backdrop-blur-2xl shadow-2xl shadow-slate-900/10 border border-white/60" 
+        : "bg-slate-900/40 backdrop-blur-2xl border border-white/15 shadow-2xl shadow-black/30"
+    ]} 
+    id="nav-bg"
+    style="border-radius: 24px 60px 24px 60px;"
+  >
+    <!-- Glass gradient overlay with glow -->
+    <div class:list={[
+      "absolute inset-0 opacity-60 transition-opacity duration-500",
+      isLight 
+        ? "bg-gradient-to-br from-white/90 via-white/30 to-stone-50/20" 
+        : "bg-gradient-to-br from-white/15 via-stone-500/5 to-transparent"
+    ]} style="border-radius: inherit;"></div>
+    
+    <!-- Animated border glow on hover -->
+    <div class="absolute inset-0 opacity-0 group-hover/nav:opacity-100 transition-opacity duration-500" style="border-radius: inherit;">
+      <div class="absolute inset-0 bg-gradient-to-r from-stone-500/20 via-transparent to-stone-500/20 blur-sm" style="border-radius: inherit;"></div>
+    </div>
+  </div>
+  <div class="flex items-center relative">
+    <!-- Navigation Links -->
+    <div class="hidden md:flex items-center gap-12 nav-links">
+      <a href="/liberator" class="nav-link group relative py-2 overflow-hidden">
+        <span class="text-sm font-bold tracking-[0.15em] uppercase transition-transform duration-500 block group-hover:-translate-y-full">Liberator</span>
+        <span class="text-sm font-bold tracking-[0.15em] uppercase transition-transform duration-500 block absolute top-full left-0 text-stone-500 group-hover:-translate-y-full">Liberator</span>
+      </a>
+      <a href="/liberator-gallery" class="nav-link group relative py-2 overflow-hidden">
+        <span class="text-sm font-bold tracking-[0.15em] uppercase transition-transform duration-500 block group-hover:-translate-y-full">Gallery</span>
+        <span class="text-sm font-bold tracking-[0.15em] uppercase transition-transform duration-500 block absolute top-full left-0 text-stone-500 group-hover:-translate-y-full">Gallery</span>
+      </a>
+      <a href="/canvas" class="nav-link group relative py-2 overflow-hidden">
+        <span class="text-sm font-bold tracking-[0.15em] uppercase transition-transform duration-500 block group-hover:-translate-y-full">Canvas</span>
+        <span class="text-sm font-bold tracking-[0.15em] uppercase transition-transform duration-500 block absolute top-full left-0 text-stone-500 group-hover:-translate-y-full">Canvas</span>
+      </a>
+      <a href="/faq" class="nav-link group relative py-2 overflow-hidden">
+        <span class="text-sm font-bold tracking-[0.15em] uppercase transition-transform duration-500 block group-hover:-translate-y-full">FAQ</span>
+        <span class="text-sm font-bold tracking-[0.15em] uppercase transition-transform duration-500 block absolute top-full left-0 text-stone-500 group-hover:-translate-y-full">FAQ</span>
+      </a>
+      <a href="/contact" class="ml-6">
+        <LiquidButton 
+          variant="primary" 
+          class="bg-stone-500 hover:bg-stone-600 text-slate-900 font-bold shadow-lg shadow-stone-500/30 hover:shadow-stone-500/50 hover:scale-105 transition-all duration-300"
+        >
+          Contact
+        </LiquidButton>
+      </a>
+    </div>
+
+    <!-- Mobile Menu Button -->
+    <button class="md:hidden text-current p-2 -mr-2" id="mobile-menu-btn" aria-label="Toggle menu">
+      <span class="sr-only">Menu</span>
+      <div class="flex flex-col gap-1.5 w-7">
+        <span class="block w-full h-[2px] bg-current origin-center transition-all duration-300" id="menu-line-1"></span>
+        <span class="block w-5 h-[2px] bg-current ml-auto transition-all duration-300" id="menu-line-2"></span>
+      </div>
+    </button>
+  </div>
+</nav>
+
+<!-- Mobile Menu Panel -->
+<div 
+  id="mobile-menu" 
+  class="fixed inset-0 z-[9998] pointer-events-none opacity-0 transition-opacity duration-500"
+>
+  <!-- Backdrop -->
+  <div class="absolute inset-0 bg-slate-900/95 backdrop-blur-xl"></div>
+  
+  <!-- Menu Content -->
+  <div class="relative h-full flex flex-col items-center justify-center gap-8 p-8">
+    <a href="/liberator" class="mobile-nav-link text-3xl font-display font-bold text-white hover:text-stone-500 transition-colors translate-y-8 opacity-0">Liberator</a>
+    <a href="/liberator-gallery" class="mobile-nav-link text-3xl font-display font-bold text-white hover:text-stone-500 transition-colors translate-y-8 opacity-0">Gallery</a>
+    <a href="/canvas" class="mobile-nav-link text-3xl font-display font-bold text-white hover:text-stone-500 transition-colors translate-y-8 opacity-0">Canvas</a>
+    <a href="/faq" class="mobile-nav-link text-3xl font-display font-bold text-white hover:text-stone-500 transition-colors translate-y-8 opacity-0">FAQ</a>
+    <a href="/contact" class="mobile-nav-link mt-4 text-lg font-bold text-slate-900 bg-stone-500 px-8 py-4 rounded-xl hover:bg-stone-400 transition-all translate-y-8 opacity-0">Contact Us</a>
+  </div>
+</div>
+
+<script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  function initNavigation() {
+    const nav = document.getElementById('main-nav');
+    const navBg = document.getElementById('nav-bg');
+    const logo = document.getElementById('nav-logo');
+    
+    const theme = nav?.dataset.theme;
+    const isLightTheme = theme === 'light';
+    
+    let isHovered = false;
+    let isScrolled = false;
+
+    // Apply scrolled/fixed state - more solid glass
+    const applyScrolledState = () => {
+      navBg?.classList.add('bg-white/80');
+      navBg?.classList.remove('bg-slate-900/40', 'bg-white/60');
+      nav?.classList.add('text-slate-900');
+      nav?.classList.remove('text-white');
+      navBg?.style.setProperty('border-radius', '30px 30px 30px 30px');
+    };
+
+    // Apply default state - lighter glass
+    const applyDefaultState = () => {
+      navBg?.classList.remove('bg-white/80');
+      navBg?.style.setProperty('border-radius', '24px 60px 24px 60px');
+      
+      if (!isLightTheme) {
+        navBg?.classList.add('bg-slate-900/40');
+        nav?.classList.add('text-white');
+        nav?.classList.remove('text-slate-900');
+      } else {
+        navBg?.classList.add('bg-white/60');
+      }
+    };
+
+    // Update nav state based on scroll and hover
+    const updateNavState = () => {
+      if (isScrolled || isHovered) {
+        applyScrolledState();
+      } else {
+        applyDefaultState();
+      }
+    };
+
+    // Hover listeners - fix nav on hover
+    nav?.addEventListener('mouseenter', () => {
+      isHovered = true;
+      updateNavState();
+    });
+
+    nav?.addEventListener('mouseleave', () => {
+      isHovered = false;
+      updateNavState();
+    });
+
+    // Scroll listener - nav always stays visible (fixed positioning)
+    // Just changes appearance on scroll
+    ScrollTrigger.create({
+      start: "top top",
+      onUpdate: (self) => {
+        isScrolled = self.scroll() > 50;
+        updateNavState();
+      }
+    });
+
+    // Mobile menu functionality
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const menuLine1 = document.getElementById('menu-line-1');
+    const menuLine2 = document.getElementById('menu-line-2');
+    const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
+    
+    let isMenuOpen = false;
+
+    const openMenu = () => {
+      isMenuOpen = true;
+      mobileMenu?.classList.remove('pointer-events-none', 'opacity-0');
+      mobileMenu?.classList.add('pointer-events-auto', 'opacity-100');
+      
+      // Animate hamburger to X
+      menuLine1?.style.setProperty('transform', 'rotate(45deg) translateY(4px)');
+      menuLine2?.style.setProperty('transform', 'rotate(-45deg) translateY(-4px)');
+      menuLine2?.style.setProperty('width', '100%');
+      menuLine2?.style.setProperty('margin-left', '0');
+      
+      // Stagger animate links
+      mobileNavLinks.forEach((link, index) => {
+        setTimeout(() => {
+          (link as HTMLElement).style.transform = 'translateY(0)';
+          (link as HTMLElement).style.opacity = '1';
+        }, 100 + index * 80);
+      });
+      
+      // Prevent body scroll
+      document.body.style.overflow = 'hidden';
+    };
+
+    const closeMenu = () => {
+      isMenuOpen = false;
+      
+      // Reset links first
+      mobileNavLinks.forEach((link) => {
+        (link as HTMLElement).style.transform = 'translateY(8px)';
+        (link as HTMLElement).style.opacity = '0';
+      });
+      
+      // Animate hamburger back
+      menuLine1?.style.setProperty('transform', 'rotate(0) translateY(0)');
+      menuLine2?.style.setProperty('transform', 'rotate(0) translateY(0)');
+      menuLine2?.style.setProperty('width', '1.25rem');
+      menuLine2?.style.setProperty('margin-left', 'auto');
+      
+      setTimeout(() => {
+        mobileMenu?.classList.add('pointer-events-none', 'opacity-0');
+        mobileMenu?.classList.remove('pointer-events-auto', 'opacity-100');
+      }, 200);
+      
+      // Restore body scroll
+      document.body.style.overflow = '';
+    };
+
+    mobileMenuBtn?.addEventListener('click', () => {
+      if (isMenuOpen) {
+        closeMenu();
+      } else {
+        openMenu();
+      }
+    });
+
+    // Close menu when clicking a link
+    mobileNavLinks.forEach((link) => {
+      link.addEventListener('click', closeMenu);
+    });
+  }
+
+  // Initialize on first load
+  initNavigation();
+
+  // Re-initialize after Astro page transitions
+  document.addEventListener('astro:page-load', initNavigation);
+
+</script>
+
+<style>
+  @keyframes nav-fade-in {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  #main-nav {
+    animation: nav-fade-in 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
+    opacity: 0;
+  }
+</style>

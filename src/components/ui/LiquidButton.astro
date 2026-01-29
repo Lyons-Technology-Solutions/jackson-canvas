@@ -1,0 +1,176 @@
+---
+interface Props {
+  href?: string;
+  variant?: 'primary' | 'outline' | 'text';
+  class?: string;
+  id?: string;
+}
+
+const { href, variant = 'primary', class: className, id } = Astro.props;
+
+const Element = href ? 'a' : 'button';
+
+const baseStyles = "relative px-8 py-4 font-display font-bold tracking-wider uppercase text-sm overflow-hidden group transition-colors duration-300 inline-flex items-center justify-center gap-2";
+
+const variants = {
+  primary: "bg-stone-600 text-white hover:bg-stone-700",
+  outline: "bg-transparent text-slate-900 border-2 border-slate-900 hover:bg-slate-900 hover:text-white",
+  text: "bg-transparent text-slate-900 px-0 py-2 hover:text-stone-600 border-b-2 border-transparent hover:border-stone-600"
+};
+---
+
+<Element 
+  href={href} 
+  class:list={[baseStyles, variants[variant], className]} 
+  id={id}
+  data-liquid-button
+>
+  <span class="relative z-10 pointer-events-none">
+    <slot />
+  </span>
+
+  {variant !== 'text' && (
+    <>
+      <canvas class="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300"></canvas>
+      <svg class="hidden">
+        <defs>
+          <filter id="liquid-filter">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" />
+            <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 19 -9" result="liquid" />
+            <feComposite in="SourceGraphic" in2="liquid" operator="atop" />
+          </filter>
+        </defs>
+      </svg>
+    </>
+  )}
+</Element>
+
+<script>
+  import { gsap } from 'gsap';
+
+  class LiquidButton {
+    canvas: HTMLCanvasElement;
+    ctx: CanvasRenderingContext2D;
+    el: HTMLElement;
+    points: { x: number; y: number; originX: number; originY: number }[] = [];
+    numPoints = 6;
+    radius = 0;
+    
+    constructor(el: HTMLElement) {
+      this.el = el;
+      this.canvas = el.querySelector('canvas')!;
+      if (!this.canvas) return;
+      
+      this.ctx = this.canvas.getContext('2d')!;
+      this.init();
+      this.addEventListeners();
+    }
+
+    init() {
+      const rect = this.el.getBoundingClientRect();
+      this.canvas.width = rect.width;
+      this.canvas.height = rect.height;
+      this.radius = Math.max(rect.width, rect.height);
+      
+      this.points = [];
+      for (let i = 0; i < this.numPoints; i++) {
+        const angle = (i / this.numPoints) * Math.PI * 2;
+        this.points.push({
+          x: rect.width / 2 + Math.cos(angle) * this.radius,
+          y: rect.height / 2 + Math.sin(angle) * this.radius,
+          originX: rect.width / 2,
+          originY: rect.height / 2
+        });
+      }
+    }
+
+    addEventListeners() {
+      this.el.addEventListener('mouseenter', (e) => this.onMouseEnter(e));
+      this.el.addEventListener('mousemove', (e) => this.onMouseMove(e));
+      this.el.addEventListener('mouseleave', () => this.onMouseLeave());
+      window.addEventListener('resize', () => this.init());
+    }
+
+    onMouseEnter(e: MouseEvent) {
+      const rect = this.el.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      
+      gsap.to(this.points, {
+        x: (i) => {
+          const angle = (i / this.numPoints) * Math.PI * 2;
+          return x + Math.cos(angle) * (this.radius * 0.8);
+        },
+        y: (i) => {
+          const angle = (i / this.numPoints) * Math.PI * 2;
+          return y + Math.sin(angle) * (this.radius * 0.8);
+        },
+        duration: 0.6,
+        ease: 'power3.out',
+        stagger: 0.02,
+        onUpdate: () => this.render()
+      });
+    }
+
+    onMouseMove(e: MouseEvent) {
+      const rect = this.el.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      
+      gsap.to(this.points, {
+        x: (i) => {
+          const angle = (i / this.numPoints) * Math.PI * 2;
+          return x + Math.cos(angle) * (this.radius * 0.6);
+        },
+        y: (i) => {
+          const angle = (i / this.numPoints) * Math.PI * 2;
+          return y + Math.sin(angle) * (this.radius * 0.6);
+        },
+        duration: 0.4,
+        ease: 'power2.out',
+        onUpdate: () => this.render()
+      });
+    }
+
+    onMouseLeave() {
+      gsap.to(this.points, {
+        x: (i) => this.points[i].originX,
+        y: (i) => this.points[i].originY,
+        duration: 0.6,
+        ease: 'power3.inOut',
+        onUpdate: () => this.render()
+      });
+    }
+
+    render() {
+      this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+      this.ctx.fillStyle = getComputedStyle(this.el).backgroundColor;
+      this.ctx.filter = 'url(#liquid-filter)';
+      
+      this.ctx.beginPath();
+      this.ctx.moveTo(this.points[0].x, this.points[0].y);
+      
+      for (let i = 1; i < this.numPoints; i++) {
+        const p1 = this.points[i];
+        const p2 = this.points[(i + 1) % this.numPoints];
+        const midX = (p1.x + p2.x) / 2;
+        const midY = (p1.y + p2.y) / 2;
+        this.ctx.quadraticCurveTo(p1.x, p1.y, midX, midY);
+      }
+      
+      this.ctx.closePath();
+      this.ctx.fill();
+    }
+  }
+
+  // Initialize all liquid buttons
+  document.querySelectorAll('[data-liquid-button]').forEach((btn) => {
+    new LiquidButton(btn as HTMLElement);
+  });
+</script>
+
+<style>
+  [data-liquid-button] canvas {
+    filter: url(#liquid-filter);
+  }
+</style>

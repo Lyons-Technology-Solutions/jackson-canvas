@@ -1,0 +1,30 @@
+---
+import { Plus, Minus } from 'lucide-react';
+
+interface Props {
+  items: {
+    question: string;
+    answer: string;
+  }[];
+  class?: string;
+}
+
+const { items, class: className } = Astro.props;
+---
+
+<div class:list={["divide-y divide-slate-200", className]}>
+  {items.map((item, index) => (
+    <details class="group py-6 cursor-pointer">
+      <summary class="flex justify-between items-center font-display font-bold text-lg text-slate-900 list-none outline-none">
+        {item.question}
+        <span class="relative w-6 h-6 flex items-center justify-center">
+          <Plus className="w-5 h-5 text-stone-600 absolute transition-transform duration-300 group-open:rotate-45 group-open:opacity-0" />
+          <Minus className="w-5 h-5 text-stone-600 absolute transition-transform duration-300 rotate-45 opacity-0 group-open:rotate-0 group-open:opacity-100" />
+        </span>
+      </summary>
+      <div class="mt-4 text-slate-600 leading-relaxed pr-12 text-sm md:text-base">
+        {item.answer}
+      </div>
+    </details>
+  ))}
+</div>

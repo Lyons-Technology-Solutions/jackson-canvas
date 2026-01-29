@@ -1,0 +1,261 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navigation from '../components/layout/Navigation.astro';
+import Footer from '../components/layout/Footer.astro';
+import Section from '../components/ui/Section.astro';
+
+const timeline = [
+  {
+    year: "1945",
+    title: "The Beginning",
+    description: "Jackson Canvas Company was started as Jackson Glove Company making work gloves."
+  },
+  {
+    year: "1950s",
+    title: "Name Change",
+    description: "The name was changed to show more diversity in the business as we expanded into canvas products."
+  },
+  {
+    year: "1960s",
+    title: "Michigan Seat Company",
+    description: "The owners spawned Michigan Seat Company which grew for over four decades until it was sold to Milsco Manufacturing in 2006."
+  },
+  {
+    year: "2001",
+    title: "Production Welding",
+    description: "We established a production welding department to weld seat frames for Michigan Seat."
+  },
+  {
+    year: "2016",
+    title: "The Liberator",
+    description: "We designed and manufactured the Liberator pontoon boat cover."
+  },
+  {
+    year: "Today",
+    title: "More Than Canvas",
+    description: "Jackson Canvas Company remained separate but now does much more than canvas products."
+  }
+];
+---
+
+<Layout title="About Us | Jackson Canvas Company">
+  <Navigation theme="light" />
+  
+  <main class="pt-24">
+    <!-- Hero -->
+    <Section>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+        <div>
+          <span class="text-stone-600 font-bold tracking-widest uppercase mb-4 block">Since 1945</span>
+          <h1 class="text-5xl md:text-7xl font-display font-bold mb-8 text-slate-900 reveal-text">
+            Rooted in <br>
+            <span class="font-serif italic text-slate-600">Jackson.</span>
+          </h1>
+          <p class="text-xl text-slate-600 leading-relaxed max-w-lg reveal-text">
+             Jackson Canvas operates out of a 29,000 square foot facility in Jackson, Michigan. We have been serving customers for more than 60 years. We provide both design and manufacture of quality canvas goods along with production metal fabrications.
+          </p>
+        </div>
+        <div class="relative aspect-square md:aspect-[4/5] bg-slate-100 rounded-lg overflow-hidden hero-image group">
+           <img 
+              src="/media/image.png" 
+              alt="Pontoon Boat with Liberator Cover" 
+              class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-105" 
+           />
+           <!-- Floating stats on hover -->
+           <div class="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-slate-900/90 to-transparent translate-y-full group-hover:translate-y-0 transition-transform duration-500">
+             <div class="flex justify-between text-white">
+               <div>
+                 <span class="text-3xl font-display font-bold">29,000</span>
+                 <span class="text-xs block text-white/70">Sq. Ft. Facility</span>
+               </div>
+               <div>
+                 <span class="text-3xl font-display font-bold">75+</span>
+                 <span class="text-xs block text-white/70">Years Experience</span>
+               </div>
+             </div>
+           </div>
+        </div>
+      </div>
+    </Section>
+
+    <!-- History Timeline -->
+    <Section class="bg-slate-50 border-y border-slate-200">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="text-3xl font-display font-bold mb-16 text-center">Our History</h2>
+        
+        <div class="space-y-16 relative before:absolute before:left-0 md:before:left-1/2 before:top-0 before:h-full before:w-px before:bg-slate-300 before:-translate-x-1/2">
+          {timeline.map((item, index) => (
+            <div class={`timeline-item relative flex flex-col md:flex-row items-center gap-8 md:gap-16 ${index % 2 === 0 ? '' : 'md:flex-row-reverse'}`}>
+              
+              <!-- Year Bubble -->
+              <div class="timeline-dot absolute left-0 md:left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-stone-600 ring-4 ring-white shadow-sm z-10 transition-all duration-300 hover:scale-150 hover:bg-stone-500"></div>
+
+              <!-- Content -->
+              <div class="w-full md:w-1/2 pl-8 md:pl-0 md:text-right">
+                 <div class={`timeline-content group cursor-pointer ${index % 2 === 0 ? 'md:text-right md:pr-8' : 'md:text-left md:pl-8'}`}>
+                    <span class="text-4xl font-display font-bold text-slate-200 mb-2 block group-hover:text-stone-500 transition-colors duration-300">{item.year}</span>
+                    <h3 class="text-xl font-bold mb-2 group-hover:translate-x-2 transition-transform duration-300">{item.title}</h3>
+                    <p class="text-slate-600 leading-relaxed">{item.description}</p>
+                 </div>
+              </div>
+              <div class="w-full md:w-1/2 hidden md:block"></div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </Section>
+
+    <!-- Team / Culture -->
+    <Section>
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <h2 class="text-3xl font-display font-bold mb-6">Our Philosophy</h2>
+        <p class="text-slate-600 text-lg">
+          We believe in quality that lasts generations. Whether it's a simple canvas repair or a complex metal fabrication, every piece that leaves our shop carries the Jackson Canvas seal of approval.
+        </p>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="philosophy-image group overflow-hidden rounded-lg relative">
+          <img src="/media/image copy 3.png" alt="Pontoon Cover" class="rounded-lg aspect-video object-cover transition-transform duration-700 group-hover:scale-110" />
+          <div class="absolute inset-0 bg-stone-500/0 group-hover:bg-stone-500/20 transition-colors duration-300"></div>
+        </div>
+        <div class="philosophy-image group overflow-hidden rounded-lg relative">
+          <img src="/media/image copy 4.png" alt="Pontoon with Cover" class="rounded-lg aspect-video object-cover transition-transform duration-700 group-hover:scale-110" />
+          <div class="absolute inset-0 bg-stone-500/0 group-hover:bg-stone-500/20 transition-colors duration-300"></div>
+        </div>
+        <div class="philosophy-image group overflow-hidden rounded-lg relative">
+          <img src="/media/image copy 5.png" alt="Pontoon Protection" class="rounded-lg aspect-video object-cover transition-transform duration-700 group-hover:scale-110" />
+          <div class="absolute inset-0 bg-stone-500/0 group-hover:bg-stone-500/20 transition-colors duration-300"></div>
+        </div>
+      </div>
+    </Section>
+  </main>
+
+  <Footer />
+</Layout>
+
+<script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+  import { animate, inView, stagger } from "motion";
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  // Hero text reveal with split animation
+  const heroTexts = document.querySelectorAll('.reveal-text');
+  heroTexts.forEach((text, i) => {
+    gsap.fromTo(text, 
+      { opacity: 0, y: 60 },
+      { 
+        opacity: 1, 
+        y: 0, 
+        duration: 1.2, 
+        ease: "power3.out",
+        delay: 0.2 + i * 0.15
+      }
+    );
+  });
+
+  // Hero image reveal
+  const heroImage = document.querySelector('.hero-image');
+  if (heroImage) {
+    gsap.fromTo(heroImage,
+      { opacity: 0, scale: 0.9, x: 50 },
+      { opacity: 1, scale: 1, x: 0, duration: 1.4, ease: "power3.out", delay: 0.4 }
+    );
+  }
+
+  // Timeline items with staggered scroll reveals
+  const timelineItems = document.querySelectorAll('.timeline-item');
+  timelineItems.forEach((item, index) => {
+    const dot = item.querySelector('.timeline-dot');
+    const content = item.querySelector('.timeline-content');
+    const isReverse = item.classList.contains('md:flex-row-reverse');
+    
+    gsap.set(item, { opacity: 0 });
+    gsap.set(content, { x: isReverse ? 50 : -50, opacity: 0 });
+    gsap.set(dot, { scale: 0 });
+    
+    ScrollTrigger.create({
+      trigger: item,
+      start: "top 80%",
+      onEnter: () => {
+        // Animate the dot first
+        gsap.to(dot, {
+          scale: 1,
+          duration: 0.5,
+          ease: "back.out(2)"
+        });
+        
+        // Then the content
+        gsap.to(item, { opacity: 1, duration: 0.3 });
+        gsap.to(content, {
+          x: 0,
+          opacity: 1,
+          duration: 0.8,
+          ease: "power3.out",
+          delay: 0.2
+        });
+      }
+    });
+  });
+
+  // Philosophy section heading
+  const philosophyHeading = document.querySelector('h2.text-3xl:last-of-type');
+  if (philosophyHeading) {
+    gsap.fromTo(philosophyHeading,
+      { opacity: 0, y: 40 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 1,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: philosophyHeading,
+          start: "top 85%"
+        }
+      }
+    );
+  }
+
+  // Philosophy images with stagger
+  const philosophyImages = document.querySelectorAll('.philosophy-image');
+  philosophyImages.forEach((img, index) => {
+    gsap.set(img, { opacity: 0, y: 60, rotateY: -15 });
+    
+    ScrollTrigger.create({
+      trigger: img,
+      start: "top 85%",
+      onEnter: () => {
+        gsap.to(img, {
+          opacity: 1,
+          y: 0,
+          rotateY: 0,
+          duration: 1,
+          ease: "power3.out",
+          delay: index * 0.15
+        });
+      }
+    });
+  });
+
+  // Parallax on hero image
+  if (heroImage) {
+    gsap.to(heroImage.querySelector('img'), {
+      scrollTrigger: {
+        trigger: heroImage,
+        start: "top bottom",
+        end: "bottom top",
+        scrub: 1
+      },
+      y: 50,
+      scale: 1.1
+    });
+  }
+</script>
+
+<style>
+  .philosophy-image {
+    transform-style: preserve-3d;
+    perspective: 1000px;
+  }
+</style>

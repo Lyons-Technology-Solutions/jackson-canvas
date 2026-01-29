@@ -1,0 +1,59 @@
+---
+---
+<div class="custom-cursor fixed top-0 left-0 w-8 h-8 pointer-events-none z-[10000] mix-blend-difference hidden md:block">
+  <div class="cursor-dot absolute inset-0 bg-stone-500 rounded-full scale-50"></div>
+  <div class="cursor-ring absolute -inset-2 border border-stone-500/50 rounded-full scale-0"></div>
+  <div class="cursor-text absolute inset-0 flex items-center justify-center text-[8px] font-bold text-slate-900 uppercase opacity-0">View</div>
+</div>
+
+<script>
+  import { gsap } from 'gsap';
+
+  const cursor = document.querySelector('.custom-cursor');
+  const dot = document.querySelector('.cursor-dot');
+  const ring = document.querySelector('.cursor-ring');
+  const text = document.querySelector('.cursor-text');
+
+  if (cursor) {
+    const xTo = gsap.quickTo(cursor, "x", { duration: 0.4, ease: "power3" });
+    const yTo = gsap.quickTo(cursor, "y", { duration: 0.4, ease: "power3" });
+
+    window.addEventListener("mousemove", (e) => {
+      xTo(e.clientX - 16);
+      yTo(e.clientY - 16);
+    });
+
+    // Hover states
+    const interactiveElements = document.querySelectorAll('a, button, [data-liquid-button], .carousel-item');
+    
+    interactiveElements.forEach(el => {
+      el.addEventListener('mouseenter', () => {
+        gsap.to(dot, { scale: 2, backgroundColor: '#78716c', duration: 0.3 });
+        gsap.to(ring, { scale: 1, opacity: 1, duration: 0.3 });
+        
+        if (el.classList.contains('carousel-item')) {
+          gsap.to(text, { opacity: 1, scale: 1, duration: 0.3 });
+          gsap.to(dot, { scale: 3, duration: 0.3 });
+        }
+      });
+
+      el.addEventListener('mouseleave', () => {
+        gsap.to(dot, { scale: 0.5, backgroundColor: '#78716c', duration: 0.3 });
+        gsap.to(ring, { scale: 0, opacity: 0, duration: 0.3 });
+        gsap.to(text, { opacity: 0, scale: 0, duration: 0.3 });
+      });
+    });
+
+    // Show cursor on first move
+    window.addEventListener("mousemove", () => {
+      gsap.to(cursor, { opacity: 1, duration: 0.3 });
+    }, { once: true });
+  }
+</script>
+
+<style>
+  .custom-cursor {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+</style>

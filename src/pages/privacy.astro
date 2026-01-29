@@ -1,0 +1,23 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navigation from '../components/layout/Navigation.astro';
+import Footer from '../components/layout/Footer.astro';
+import Section from '../components/ui/Section.astro';
+---
+
+<Layout title="Privacy Policy | Jackson Canvas Co.">
+  <Navigation />
+  <main class="pt-24">
+    <Section>
+      <div class="max-w-3xl mx-auto prose prose-slate">
+        <h1>Privacy Policy</h1>
+        <p>Last updated: {new Date().toLocaleDateString()}</p>
+        <p>Your privacy is important to us. It is Jackson Canvas Co.'s policy to respect your privacy regarding any information we may collect from you across our website.</p>
+        <!-- Placeholder content -->
+        <h2>Information We Collect</h2>
+        <p>We only ask for personal information when we truly need it to provide a service to you. We collect it by fair and lawful means, with your knowledge and consent.</p>
+      </div>
+    </Section>
+  </main>
+  <Footer />
+</Layout>
