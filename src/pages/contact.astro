@@ -262,11 +262,12 @@ import Button from '../components/ui/Button.astro';
     if (btnLabel) btnLabel.textContent = 'Sending...';
 
     try {
-      await fetch('/', {
+      const response = await fetch('/.netlify/functions/contact-form', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: (() => { const p = new URLSearchParams(); new FormData(netlifyForm).forEach((v, k) => p.append(k, v.toString())); return p.toString(); })()
       });
+      if (!response.ok) throw new Error('Submission failed');
 
       if (formFieldsEl) formFieldsEl.style.display = 'none';
       if (formSuccessEl) {
