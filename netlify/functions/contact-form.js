@@ -27,8 +27,8 @@ exports.handler = async (event) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        from: "Jackson Canvas <onboarding@resend.dev>",
-        to: "akai@techlts.com",
+        from: "Jackson Canvas <noreply@jacksoncanvas.com>",
+        to: "JDingee@jacksoncanvas.com",
         subject: `New Contact Form: ${firstName} ${lastName}`,
         reply_to: email,
         html: `
