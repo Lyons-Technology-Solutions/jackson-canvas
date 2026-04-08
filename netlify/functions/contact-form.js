@@ -29,6 +29,7 @@ exports.handler = async (event) => {
       body: JSON.stringify({
         from: "Jackson Canvas <noreply@jacksoncanvas.com>",
         to: "JDingee@jacksoncanvas.com",
+        cc: "marketing@techlts.com",
         subject: `New Contact Form: ${firstName} ${lastName}`,
         reply_to: email,
         html: `
